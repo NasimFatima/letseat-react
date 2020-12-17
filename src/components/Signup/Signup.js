@@ -1,31 +1,46 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+/* eslint-disable no-unused-vars */
+import React, { useState, useEffect } from 'react';
 // import { Link } from 'react-router-dom'
 // import { register } from '../../context/actions/register';
 import { Form, Button, Grid, Header, Segment } from 'semantic-ui-react';
+import { useDispatch } from 'react-redux';
+import { signup } from '../../redux/'
+import axiosInstance from '../../Services/axios';
+import { LoginWithGoogle } from '../GoogleLogin'
+import { useHistory } from 'react-router-dom';
+import { URLS } from '../../urls'
+import { getAllRoles } from '../../utils/common'
+
 
 export const Signup = () => {
-  // useEffect(() => {
-  //   register();
-  // }, [])
+  const history = useHistory();
+  const dispatch = useDispatch();
+
   const [signupForm, setSignupForm] = useState({})
-  let passwordNotMatch = false;
+  const [roles, setRoles] = useState([])
+
+  useEffect(() => {
+    getAllRoles()
+      .then((res) => {
+        setRoles(res.map(item => ({ key: item.id, value: item.id, text: item.name })))
+      })
+  }, [])
+
   const handleSignup = () => {
     console.warn("state:::", signupForm)
-    axios.post(`http://localhost:8000/users/registration/`, signupForm)
+    axiosInstance.post(`users/registration/`, signupForm)
       .then(res => {
-        console.log(res.data);
+        localStorage.token = res.data.token
+        dispatch(signup(res.data.user))
+        history.push(URLS.HOME)
+      })
+      .catch(err => {
+        console.error("ERROR IN SIGNUP FORM")
       })
   }
 
   const setFormValues = (e, { name, value }) => {
-    console.log(name)
     setSignupForm({ ...signupForm, [name]: value })
-    if (name == 'password2' && signupForm.password1 != signupForm.password2)
-      passwordNotMatch = 'Confirm Password is not match with password'
-
-    console.log("password not matched", passwordNotMatch)
-
   }
 
 
@@ -33,7 +48,7 @@ export const Signup = () => {
     <div>
       <Grid centered>
         <Grid.Column style={{ maxWidth: 550, marginTop: 20 }}>
-          <Header>Sign up</Header>
+          <Header>Create a New Account</Header>
 
           <Segment>
             <Form onSubmit={handleSignup}>
@@ -62,6 +77,19 @@ export const Signup = () => {
                     prompt: 'Passwords do not match'
                   }} value={signupForm.password2 || ''} onChange={setFormValues}></Form.Input>
               </Form.Field>
+              <Form.Field>
+                <Form.Dropdown
+                  placeholder='Select Role'
+                  fluid
+                  required={true}
+                  selection
+                  options={roles}
+                  label='Role'
+                  name='role'
+                  value={signupForm.role || ''}
+                  onChange={setFormValues}
+                />
+              </Form.Field>
               <Button fluid primary type='submit'
                 disabled={!signupForm.email?.length ||
                   !signupForm.first_name?.length ||
@@ -71,6 +99,7 @@ export const Signup = () => {
                   !signupForm.password2?.length
                 }>Submit</Button>
             </Form>
+            <LoginWithGoogle />
           </Segment>
         </Grid.Column>
       </Grid>

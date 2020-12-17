@@ -1,13 +1,31 @@
+/* eslint-disable no-unused-vars */
 import axios from 'axios'
 
 const baseURL = process.env.REACT_APP_BACKEND_URL;
-console.log("BASE URL:::", baseURL)
-let headers;
-if (localStorage.token) {
-  headers.Authorization = `Bearer ${localStorage.token}`
-}
+let headers = {};
+// if (localStorage.token) {
+//   headers.Authorization = `JWT ${localStorage.token}`
+// }
 
-export const axiosInstance = axios.create({
+const axiosInstance = axios.create({
   baseURL: baseURL,
-  headers,
 })
+
+axiosInstance.interceptors.request.use((request) => {
+  if (localStorage.token) {
+    request.headers.Authorization = `JWT ${localStorage.token}`
+  }
+  return request;
+});
+
+axiosInstance.interceptors.response.use((response) => {
+  return response;
+}, (error) => {
+  if (error.response.status === 401) {
+    localStorage.removeItem("token")
+  }
+  return Promise.reject(error);
+});
+
+
+export default axiosInstance;

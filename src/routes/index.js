@@ -1,21 +1,24 @@
 import { Signup } from '../components/Signup'
 import { Login } from '../components/Login'
-import { Contacts } from '../components/Contacts'
-
+import { Home } from '../components/Home'
+import { URLS } from '../urls'
 export const routes = [
   {
-    path: '/auth/register',
+    path: URLS.REGISTER,
     component: Signup,
-    title: 'Register'
+    title: 'Register',
+    needsAuth: false
   },
   {
-    path: '/auth/login',
+    path: URLS.LOGIN,
     component: Login,
-    title: 'Login'
+    title: 'Login',
+    needsAuth: false
   },
   {
-    path: '/',
-    component: Contacts,
-    title: 'Contact'
+    path: URLS.HOME,
+    component: Home,
+    title: 'Home',
+    needsAuth: true
   }
 ]

@@ -1,19 +1,20 @@
 /* eslint-disable react/react-in-jsx-scope */
 import './App.css';
 import 'semantic-ui-css/semantic.css'
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import { BrowserRouter, Switch } from 'react-router-dom'
 import { routes } from './routes'
-import { Headers } from './components/Header'
+import { RenderRoute } from './routes/routesMapping'
+
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Headers />
         <Switch>
-          {routes.map((route, index) => (
-            <Route key={index} path={route.path} exact render={(props) => <route.component {...props} />}></Route>
-          ))}
+          {
+            routes.map((route, index) => (
+              <RenderRoute {...route} key={index} />))
+          }
         </Switch>
       </BrowserRouter>
     </div>
@@ -21,3 +22,4 @@ function App() {
 }
 
 export default App;
+
