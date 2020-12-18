@@ -3,8 +3,11 @@ import isAuthenticated from '../utils/isAuthenticated'
 import { useHistory } from 'react-router-dom';
 import { Route } from 'react-router-dom'
 import { URLS } from '../urls'
+import { BrowserRouter, Switch } from 'react-router-dom'
+import { routes } from './index'
 
-export const RenderRoute = (route) => {
+
+const RenderRoute = (route) => {
   const history = useHistory()
   document.title = route.title || "LetsEat"
   if (route.needsAuth && !isAuthenticated()) {
@@ -15,4 +18,17 @@ export const RenderRoute = (route) => {
   }
   return <Route exact render={(props) => <route.component {...props} />}></Route>
 
+}
+
+export const Router = () => {
+  return (
+    <BrowserRouter>
+      <Switch>
+        {
+          routes.map((route, index) => (
+            <RenderRoute {...route} key={index} />))
+        }
+      </Switch>
+    </BrowserRouter>
+  )
 }

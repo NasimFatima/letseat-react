@@ -2,6 +2,8 @@ import { Signup } from '../components/Signup'
 import { Login } from '../components/Login'
 import { Home } from '../components/Home'
 import { URLS } from '../urls'
+
+
 export const routes = [
   {
     path: URLS.REGISTER,

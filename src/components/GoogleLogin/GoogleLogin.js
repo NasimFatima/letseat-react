@@ -1,6 +1,6 @@
 /* eslint-disable react/react-in-jsx-scope */
 import { GoogleLogin } from 'react-google-login'
-import axiosInstance from '../../Services/axios';
+import API from '../../Services/axios';
 import { useDispatch } from 'react-redux';
 import { login } from '../../redux/'
 import { URLS } from '../../urls'
@@ -10,7 +10,7 @@ export const LoginWithGoogle = () => {
   const history = useHistory()
   const dispatch = useDispatch();
   const successResponseGoogle = response => {
-    axiosInstance.post(`users/google/`, { token: response.accessToken })
+    API.post(`users/google/`, { token: response.accessToken })
       .then(res => {
         localStorage.token = res.data.token;
         dispatch(login(res.data.user))
@@ -22,7 +22,7 @@ export const LoginWithGoogle = () => {
   }
   return (
     <div>
-      <GoogleLogin clientId='978375545872-likpjuqa6orl59pov6m1tosk6jvq6dal.apps.googleusercontent.com'
+      <GoogleLogin clientId={process.env.clientId}
         buttonText="Login with google"
 
         onSuccess={successResponseGoogle}
