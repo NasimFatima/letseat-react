@@ -6,45 +6,40 @@ import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-import { login } from '../../redux/'
+import { login } from '../../redux/';
 import API from '../../Services/axios';
-import { LoginWithGoogle } from '../GoogleLogin'
+import { LoginWithGoogle } from '../GoogleLogin';
 import { useHistory } from 'react-router-dom';
-import { URLS } from '../../urls'
-import { Paper, CustomForm } from './style'
-
-// import { Link } from 'react-router-dom'
+import { URLS } from '../../urls';
+import { Paper, CustomForm } from './style';
 
 export const Login = () => {
-
-  const history = useHistory()
+  const history = useHistory();
   const dispatch = useDispatch();
-  const [loginForm, setLoginForm] = useState({ email: '', password: '' })
-  const [errorMessage, setErrorMessage] = useState('')
+  const [loginForm, setLoginForm] = useState({ email: '', password: '' });
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleLogin = () => {
     API.post(`users/login/`, loginForm)
       .then(res => {
         if (res.data.Success) {
           localStorage.token = res.data.token;
-          dispatch(login(res.data.user))
-          history.push(URLS.HOME)
-          setErrorMessage('')
+          dispatch(login(res.data.user));
+          history.push(URLS.HOME);
+          setErrorMessage('');
+        } else {
+          setErrorMessage(res.data.error);
         }
-        else {
-          setErrorMessage(res.data.error)
-        }
-        console.error("error msg", errorMessage)
-
+        console.error('error msg', errorMessage);
       })
       .catch(err => {
-        console.error("ERROR IN LOGIN FORM", err)
-      })
-  }
+        console.error('ERROR IN LOGIN FORM', err);
+      });
+  };
 
-  const setFormValues = (e) => {
-    setLoginForm({ ...loginForm, [e.target.name]: e.target.value })
-  }
+  const setFormValues = e => {
+    setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
+  };
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -79,7 +74,6 @@ export const Login = () => {
                 autoComplete="password"
                 value={loginForm.password || ''}
                 onChange={setFormValues}
-
               />
             </Grid>
             <Button
@@ -89,11 +83,11 @@ export const Login = () => {
               onClick={handleLogin}
             >
               Sign Up
-                </Button>
+            </Button>
             <LoginWithGoogle />
           </form>
         </CustomForm>
       </Paper>
-    </Container >
-  )
-}
+    </Container>
+  );
+};
