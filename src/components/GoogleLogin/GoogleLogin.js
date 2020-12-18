@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { login } from '../../redux/'
 import { URLS } from '../../urls'
 import { useHistory } from 'react-router-dom';
+import { FormInput } from '../../utils/styles'
 
 export const LoginWithGoogle = () => {
   const history = useHistory()
@@ -22,9 +23,13 @@ export const LoginWithGoogle = () => {
   }
   return (
     <div>
-      <GoogleLogin clientId={process.env.clientId}
+      <GoogleLogin clientId={process.env.REACT_APP_clientId}
         buttonText="Login with google"
-
+        render={renderProps => (
+          <FormInput>
+            <button onClick={renderProps.onClick}>Login With Google</button>
+          </FormInput>
+        )}
         onSuccess={successResponseGoogle}
         cookiePolicy={'single_host_origin'}
       ></GoogleLogin>

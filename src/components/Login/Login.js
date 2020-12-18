@@ -1,26 +1,21 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
 import { login } from '../../redux/';
 import API from '../../Services/axios';
 import { LoginWithGoogle } from '../GoogleLogin';
 import { useHistory } from 'react-router-dom';
 import { URLS } from '../../urls';
-import { Paper, CustomForm } from './style';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import { CustomForm, Wrapper, FormInput, Error } from '../../utils/styles'
 
 export const Login = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const [loginForm, setLoginForm] = useState({ email: '', password: '' });
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleLogin = () => {
-    API.post(`users/login/`, loginForm)
+  const submitLoginForm = (LoginData) => {
+    API.post(`users/login/`, LoginData)
       .then(res => {
         if (res.data.Success) {
           localStorage.token = res.data.token;
@@ -36,58 +31,60 @@ export const Login = () => {
         console.error('ERROR IN LOGIN FORM', err);
       });
   };
+  const formik = useFormik({
+    initialValues: { email: '', password: '' },
+    validationSchema: Yup.object({
+      email: Yup.string()
+        .email('Email is invalid')
+        .required('Email is required'),
+      password: Yup.string()
+        .required('Password is required'),
+    }),
+    onSubmit: async (values) => {
+      submitLoginForm(values)
+    },
+  });
 
-  const setFormValues = e => {
-    setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
-  };
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <Paper>
-        <Typography component="h1" variant="h5">
-          Sign up
-        </Typography>
-        <CustomForm>
-          <form>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                type="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                value={loginForm.email || ''}
-                onChange={setFormValues}
-              />
-            </Grid>
 
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                autoComplete="password"
-                value={loginForm.password || ''}
-                onChange={setFormValues}
-              />
-            </Grid>
-            <Button
-              fullWidth
-              variant="contained"
-              color="primary"
-              onClick={handleLogin}
-            >
-              Sign Up
-            </Button>
-            <LoginWithGoogle />
-          </form>
-        </CustomForm>
-      </Paper>
-    </Container>
+    <Wrapper>
+      <CustomForm onSubmit={formik.handleSubmit}>
+        <h1>Login to Your Account</h1>
+        <FormInput>
+          <label htmlFor="email">Email</label>
+          <input
+            name="email"
+            value={formik.values.email}
+            type="email"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.email && formik.errors.email ? (
+            <Error>
+              {formik.errors.email}
+            </Error>
+          ) : null}
+        </FormInput>
+        <FormInput>
+          <label htmlFor="password">Password</label>
+          <input
+            name="password"
+            value={formik.values.password1}
+            type="password"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.password1 && formik.errors.password1 ? (
+            <Error>
+              {formik.errors.first_name}
+            </Error>
+          ) : null}
+        </FormInput>
+        <FormInput>
+          <button type="submit"> Login</button>
+          <LoginWithGoogle />
+        </FormInput>
+      </CustomForm>
+    </Wrapper>
   );
 };
