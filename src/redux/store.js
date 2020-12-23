@@ -2,6 +2,11 @@ import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { rootReducer } from './rootReducer';
 import logger from 'redux-logger';
+import createSagaMiddleware from 'redux-saga'
+import { rootSaga } from '../sagas';
+
+// create the saga middleware
+const sagaMiddleware = createSagaMiddleware()
 
 const loadFromLocalStorage = () => {
   try {
@@ -30,9 +35,11 @@ const peristedState = loadFromLocalStorage();
 export const store = createStore(
   rootReducer,
   peristedState,
-  composeWithDevTools(applyMiddleware(logger))
+  composeWithDevTools(applyMiddleware(logger, sagaMiddleware))
 );
 
 store.subscribe(() => {
   saveToLocalStorage(store.getState());
 });
+
+sagaMiddleware.run(rootSaga)
