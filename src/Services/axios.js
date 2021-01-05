@@ -1,27 +1,40 @@
+/* eslint-disable no-debugger */
 /* eslint-disable no-unused-vars */
 import axios from 'axios'
+import changeCaseObject from 'change-case-object'
 
-const baseURL = process.env.REACT_APP_BACKEND_URL;
-let headers = {};
-const axiosInstance = axios.create({
-  baseURL: baseURL,
-})
-
-axiosInstance.interceptors.request.use((request) => {
-  if (localStorage.token) {
-    request.headers.Authorization = `JWT ${localStorage.token}`
+const apiClient = (url, method = "get", data = {}, caseConversion = true) => {
+  const baseURL = process.env.REACT_APP_BACKEND_URL;
+  const config = {
+    url: url,
+    method: method,
+    baseURL: baseURL
   }
-  return request;
-});
-
-axiosInstance.interceptors.response.use((response) => {
-  return response;
-}, (error) => {
-  if (error.response.status === 401) {
-    localStorage.removeItem("token")
+  if (!caseConversion)
+    data = changeCaseObject.snakeCase(data)
+  if (method.toLocaleLowerCase === 'get') {
+    config['params'] = data
+  } else {
+    config['data'] = data
   }
-  return Promise.reject(error);
-});
+
+  axios.interceptors.request.use((config) => {
+    if (localStorage.token) {
+      config.headers.Authorization = `JWT ${localStorage.token}`
+    }
+    return config;
+  });
+
+  axios.interceptors.response.use((response) => {
+    return response;
+  }, (error) => {
+    if (error.response.status === 401) {
+      localStorage.removeItem("token")
+    }
+    return Promise.reject(error);
+  });
+  return axios(config)
+}
 
 
-export default axiosInstance;
+export default apiClient;

@@ -12,7 +12,7 @@ export function* registerSaga(payload) {
     if (!response.error)
       yield call(updateLocation, URLS.HOME);
   } catch (error) {
-    yield put(signupError(error));
+    yield put(signupError({ error: error }));
   }
 }
 
@@ -23,7 +23,7 @@ export function* loginSaga(payload) {
     if (!response.error)
       yield call(updateLocation, URLS.HOME);
   } catch (error) {
-    yield put(loginError(error))
+    yield put(loginError({ error: error }))
   }
 }
 

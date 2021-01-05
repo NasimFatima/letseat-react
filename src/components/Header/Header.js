@@ -1,24 +1,34 @@
 import React from 'react';
-import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
+import { Bar, Typograph, Button } from './styles'
+import PropTypes from "prop-types";
+import { useDispatch } from 'react-redux';
+import { getItemDetails } from '../../redux'
 
-export const Headers = () => {
+export const Headers = (props) => {
+  const dispatch = useDispatch();
+  const { headerItems } = props
+  const handleClick = (id) => {
+    dispatch(getItemDetails(id))
+  }
   return (
     <div>
-      <AppBar position='static'>
+      <Bar>
         <Toolbar>
-          <IconButton edge='start' color='inherit' aria-label='menu'>
-            <MenuIcon />
-          </IconButton>
-          <Typography variant='h6' >
-            Lets Eat
-            </Typography>
+          {headerItems.map((item, key) => {
+            return (<Typograph variant='h6' key={key}>
+              <Button onClick={() => handleClick(item.id)}> {item.name}</Button>
+            </Typograph>)
+
+          })
+          }
         </Toolbar>
-      </AppBar>
+      </Bar>
     </div>
   )
 
 }
+
+Headers.propTypes = {
+  headerItems: PropTypes.arrayOf(PropTypes.object),
+};

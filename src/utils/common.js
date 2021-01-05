@@ -1,5 +1,5 @@
 import API from '../Services/axios';
-import { URLS } from '../urls'
+import { API_END_POINTS } from '../apiEndPoints'
 import history from './myHistory';
 
 export const updateLocation = url => {
@@ -8,8 +8,8 @@ export const updateLocation = url => {
 
 export const getAllRoles = async () => {
   let response = await API.get(
-    URLS.GETROLES);
-  return response.data.data
+    API_END_POINTS.GETROLES);
+  return response.data
 
 }
 

@@ -62,7 +62,7 @@ export const Wrapper = styled.div`
   box-shadow: 0 0 1.5rem rgba(105, 105, 105, 0.5);
   border-radius: 4px;
   margin: auto;
-  margin-bottom: 30px;
+  margin-top: 100px;
   width: 50vw;
 
 `

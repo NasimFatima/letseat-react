@@ -11,15 +11,15 @@ export const userAuthReducer = (state = initial_state, action) => {
   const payload = action.payload
   switch (action.type) {
     case Types.LOGIN_SUCCESS:
-      return { ...state, user: payload };
+      return { ...state, user: { ...state.user, ...payload } };
     case Types.LOGIN_ERROR:
-      return { ...state, user: payload };
+      return { ...state, user: { ...state.user, ...payload } };
     case Types.SIGNUP_SUCCESS:
-      return { ...state, user: payload };
+      return { ...state, user: { ...state.user, ...payload } };
     case Types.SIGNUP_ERROR:
-      return { ...state, user: payload };
+      return { ...state, user: { ...state.user, ...payload } };
     case Types.GET_ROLES_SUCCESS:
-      return { ...state, roles: payload };
+      return { ...state, roles: { ...state.user, ...payload } };
     default:
       return state;
   }

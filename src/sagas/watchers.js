@@ -1,11 +1,21 @@
 import { takeLatest, all } from 'redux-saga/effects';
 import { registerSaga, loginSaga, getRolesSaga } from './AuthenticationSaga';
-
+import { getEmployeesSaga, createEmployeesSaga } from './EmployeeSaga'
+import { getAllMenuItemsSaga, getItemDetailsSaga, createMenuItems } from './MenuSaga'
 import { Types } from '../redux/Types/UserAuthTypes';
-
+import { EMPLOYEE_Types } from '../redux/Types/EmployeeTypes'
+import { MENU_Types } from '../redux/Types/MenuTypes'
 
 export default function* watchUserAuthentication() {
   yield all([takeLatest(Types.SIGNUP, registerSaga),
   takeLatest(Types.LOGIN, loginSaga),
-  takeLatest(Types.GET_ROLES, getRolesSaga)])
+  takeLatest(Types.GET_ROLES, getRolesSaga),
+  takeLatest(EMPLOYEE_Types.GET_EMPLOYEES, getEmployeesSaga),
+  takeLatest(EMPLOYEE_Types.CREATE_EMPLOYEE, createEmployeesSaga),
+  takeLatest(MENU_Types.GET_MENU_ITEMS, getAllMenuItemsSaga),
+  takeLatest(MENU_Types.GET_ITEM_DETAILS, getItemDetailsSaga),
+  takeLatest(MENU_Types.CREATE_MENU, createMenuItems),
+
+
+  ])
 }

@@ -4,12 +4,16 @@ import './index.css';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
 import { Routes } from './routes/routesMapping'
+import { StylesProvider } from "@material-ui/core/styles";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <Routes />
-    </Provider>
+    <StylesProvider injectFirst>
+      <Provider store={store}>
+        <Routes />
+      </Provider>
+    </StylesProvider>
+
   </React.StrictMode>,
   document.getElementById('root')
 );
