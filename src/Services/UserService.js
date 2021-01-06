@@ -29,7 +29,7 @@ export const getAllRoles = async () => {
 
 export const createUser = async (data) => {
   try {
-    const response = await API(API_END_POINTS.USERS, method = "post", data.payload, false)
+    const response = await API(API_END_POINTS.USERS, "post", data.payload, false)
     if (response.data) {
       return response.data
     } else {

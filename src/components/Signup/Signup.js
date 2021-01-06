@@ -1,7 +1,7 @@
 /* eslint-disable no-debugger */
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { signup, getRoles, createEmployee, signupError } from '../../redux/';
 import { LoginWithGoogle } from '../GoogleLogin';
@@ -16,8 +16,8 @@ import PropTypes from "prop-types";
 export const Signup = (props) => {
   const { type } = props
   const dispatch = useDispatch();
-  const [roles, setRoles] = useState([])
   const state = useSelector(state => state.auth);
+  const roles = state.roles
   const initialValues = {
     firstName: '',
     lastName: '',
@@ -28,14 +28,14 @@ export const Signup = (props) => {
     address: '',
     role: 0,
   };
-
   useEffect(() => {
     dispatch(signupError({ error: '' }))
+    dispatch(getRoles())
     getAllRoles().then(res => {
       if (type === 'Create_Employee') {
         res = res.filter(item => item.name === 'Employee')
       }
-      setRoles(res)
+      // setRoles(res)
     })
   }, []);
 
@@ -61,7 +61,6 @@ export const Signup = (props) => {
       ...rest
     }
     if (type === 'Create_Employee') {
-      console.log("create emplouee")
       data.role = roles[0].id
       dispatch(createEmployee(data))
     } else
@@ -101,7 +100,6 @@ export const Signup = (props) => {
             <Field name="password2" type="password" />
             <ErrorMessage name="password2" component={TextError} />
             <Field as="select" options={roles} name="role">
-              {console.log("state.roles::::::::", roles)}
               {roles.map((role, index) => (
                 <option
                   key={role.id}

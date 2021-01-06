@@ -10,7 +10,7 @@ const apiClient = (url, method = "get", data = {}, caseConversion = true) => {
     method: method,
     baseURL: baseURL
   }
-  if (!caseConversion)
+  if (caseConversion)
     data = changeCaseObject.snakeCase(data)
   if (method.toLocaleLowerCase === 'get') {
     config['params'] = data

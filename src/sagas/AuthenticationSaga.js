@@ -1,8 +1,9 @@
 /* eslint-disable no-debugger */
 import { put, call } from 'redux-saga/effects';
 import { registerUserService, loginUserService } from '../Services/AuthenticationService'
-import { loginSuccess, loginError, signupError, signupSuccess, getRolesSuccess, getRolesError } from '../redux'
-import { updateLocation, getAllRoles } from '../utils/common'
+import { loginSuccess, loginError, signupError, signupSuccess, getRolesSuccess } from '../redux'
+import { updateLocation } from '../utils/common'
+import { getAllRoles } from '../Services/UserService'
 import { URLS } from '../urls'
 
 export function* registerSaga(payload) {

@@ -7,7 +7,7 @@ export const updateLocation = url => {
 };
 
 export const getAllRoles = async () => {
-  let response = await API.get(
+  let response = await API(
     API_END_POINTS.GETROLES);
   return response.data
 
