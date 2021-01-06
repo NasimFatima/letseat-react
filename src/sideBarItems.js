@@ -6,7 +6,7 @@ import { Employee } from './components/Employees'
 import { Menu } from './components/Menu'
 export const menuBarRoutes = [
   {
-    path: "/dashboard",
+    path: "/home",
     title: 'DashBoard',
     needsAuth: true,
     icon: Dashboard,
