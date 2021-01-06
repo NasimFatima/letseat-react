@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable react/prop-types */
 import React, { useEffect } from 'react';
 import { Card, Grid } from '@material-ui/core';
@@ -7,6 +8,7 @@ import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUIValues, createMenu } from '../../../redux'
 import { FormGroup, Button } from './style'
+import { array } from 'yup/lib/locale';
 
 export const AddMenuItem = () => {
 
@@ -36,6 +38,28 @@ export const AddMenuItem = () => {
   });
 
   const onSubmit = values => {
+
+    values.itemCategories.forEach((category, index) => {
+      if (JSON.stringify(category) === JSON.stringify(initialValues.itemCategories[0])) {
+        values.itemCategories.splice(index, 1)
+      } else {
+        category.itemSizes.forEach((size, i) => {
+          console.log("size:::", size)
+          if (JSON.stringify(size) === JSON.stringify(initialValues.itemCategories[0].itemSizes[0])) {
+            values.itemCategories[index].itemSizes.splice(i, 1)
+          }
+
+        });
+      }
+      if (values.itemCategories.length < 1) {
+        delete values.itemCategories
+      }
+      else if (values.itemCategories[index]?.itemSizes.length < 1) {
+        delete values.itemCategories[index].itemSizes
+      }
+    })
+
+    console.log("values:::", values)
     dispatch(createMenu(values))
   };
 
@@ -58,6 +82,10 @@ export const AddMenuItem = () => {
                 name={`itemCategories`}
                 render={categoryHelpers => (
                   <div>
+                    <Button type="button"
+                      onClick={() => {
+                        categoryHelpers.push({ name: '', description: '', itemSizes: [], });
+                      }}>Add Category</Button>
                     {values.itemCategories.map((category, index) => (
                       <div key={index}>
                         <h3>Add Category</h3>
@@ -70,10 +98,6 @@ export const AddMenuItem = () => {
                           </Grid>
                           <Grid item sm={4}>
                             <Button type="button" onClick={() => categoryHelpers.remove(index)}>-</Button>
-                            <Button type="button"
-                              onClick={() => {
-                                categoryHelpers.push({ name: '', description: '', itemSizes: [], });
-                              }}>+</Button>
                           </Grid>
                         </Grid>
                         <FieldArray

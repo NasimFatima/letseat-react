@@ -1,6 +1,7 @@
 import { put, call } from 'redux-saga/effects';
 import { getAllUserService, createUser } from '../Services/UserService'
 import { showCreateEmployeeForm, getAllEmployeesSuccess, toggleCreateEmployeeModal, signupError } from '../redux'
+import { toast } from "react-toastify";
 
 
 export function* getEmployeesSaga() {
@@ -8,10 +9,11 @@ export function* getEmployeesSaga() {
     yield put(showCreateEmployeeForm({ 'showForm': false, }))
     const response = yield call(getAllUserService);
     response.map(item => {
-      item.is_superuser = String(item.is_superuser)
+      item.isSuperuser = String(item.isSuperuser)
       item.role = item.groups[0]?.name
     })
     yield put(getAllEmployeesSuccess(response))
+
   } catch (error) {
     console.error(error)
   }
@@ -21,13 +23,15 @@ export function* createEmployeesSaga(data) {
   try {
     const response = yield call(createUser, data);
     if (response.Success) {
+      toast.success("Employee Created Successfully")
       yield put(toggleCreateEmployeeModal({ createModalOpen: false }))
 
     } else {
-      console.log(response.Error[Object.keys(response.Error)[0]])
-      yield put(signupError({ error: response.Error[Object.keys(response.Error)[0]] }))
+      toast.error(response.Error[Object.keys(response.Error)[0]])
+      // yield put(signupError({ error: response.Error[Object.keys(response.Error)[0]] }))
     }
   } catch (error) {
-    yield put(signupError({ error: error }));
+    toast.error(error)
+    // yield put(signupError({ error: error }));
   }
 }

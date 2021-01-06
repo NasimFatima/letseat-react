@@ -19,8 +19,8 @@ export const Employee = () => {
     dispatch(showCreateEmployeeForm({ showForm: true, createModalOpen: true }))
   }
 
-  const headers = [{ title: 'First Name', key: 'first_name' }, { title: 'Last Name', key: 'last_name' }, { title: 'Email', key: 'email' },
-  { title: 'User Name', key: 'username' }, { title: 'Super User', key: 'is_superuser' }, { title: 'Role', key: 'role' }]
+  const headers = [{ title: 'First Name', key: 'firstName' }, { title: 'Last Name', key: 'lastName' }, { title: 'Email', key: 'email' },
+  { title: 'User Name', key: 'username' }, { title: 'Super User', key: 'isSuperuser' }, { title: 'Role', key: 'role' }]
   return (
     <div>
       <MenuBar />

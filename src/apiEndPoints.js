@@ -5,5 +5,6 @@ export const API_END_POINTS = {
   'USERS': `users/usersDetails/`,
   'GETROLES': `users/group/`,
   'ITEMS': `menu/Items/`,
-  'ITEMS_CATEGORY': `menu/menuItems/`
+  'ITEMS_CATEGORY': `menu/menuItems/`,
+
 }

@@ -12,6 +12,8 @@ import { TextError } from '../../utils/TextError';
 import changeCaseObject from 'change-case-object'
 import { getAllRoles } from '../../Services/UserService'
 import PropTypes from "prop-types";
+import Link from '@material-ui/core/Link';
+import { URLS } from '../../urls'
 
 export const Signup = (props) => {
   const { type } = props
@@ -113,6 +115,7 @@ export const Signup = (props) => {
             {type !== 'Create_Employee' && <LoginWithGoogle />}
 
           </FormInput>
+          <Link href={URLS.LOGIN}>Already Have an Account</Link>
         </Form>
       </Formik>
     </Wrapper>

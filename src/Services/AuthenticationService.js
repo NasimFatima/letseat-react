@@ -28,13 +28,14 @@ export const loginUserService = async (data) => {
     }
     else {
       response = await API(API_END_POINTS.LOGIN, "post", data.payload);
-      if (response.data.Success) {
-        localStorage.token = response.data.token;
-        return response.data.user;
-      } else {
-        return { error: response.data.error };
-      }
     }
+    if (response.data.success) {
+      localStorage.token = response.data.token;
+      return response.data.user;
+    } else {
+      return { error: response.data.error };
+    }
+
   } catch (err) {
     return { error: err };
   }

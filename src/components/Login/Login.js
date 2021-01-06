@@ -6,6 +6,8 @@ import { Formik, Field, ErrorMessage, Form } from 'formik';
 import * as Yup from 'yup';
 import { Wrapper, FormInput, Error } from '../../utils/styles';
 import { TextError } from '../../utils/TextError';
+import Link from '@material-ui/core/Link';
+import { URLS } from '../../urls'
 
 export const Login = () => {
   const dispatch = useDispatch();
@@ -42,6 +44,7 @@ export const Login = () => {
             <button type="submit">Login</button>
             <LoginWithGoogle />
           </FormInput>
+          <Link href={URLS.REGISTER}>Create A New Account</Link>
         </Form>
       </Formik>
     </Wrapper>

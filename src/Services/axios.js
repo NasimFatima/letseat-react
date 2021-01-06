@@ -26,6 +26,7 @@ const apiClient = (url, method = "get", data = {}, caseConversion = true) => {
   });
 
   axios.interceptors.response.use((response) => {
+    response['data'] = changeCaseObject.camelCase(response.data)
     return response;
   }, (error) => {
     if (error.response.status === 401) {

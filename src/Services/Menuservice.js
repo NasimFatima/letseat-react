@@ -25,7 +25,7 @@ export const getItemsCategories = async (searchParams) => {
 
 export const createMenuItem = async (data) => {
   try {
-    const response = await API(API_END_POINTS.ITEMS, method = "post", data)
+    const response = await API(API_END_POINTS.ITEMS_CATEGORY, "post", data.payload)
     if (response.data) {
       return response.data
     } else {
