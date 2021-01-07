@@ -1,5 +1,5 @@
 import { takeLatest, all } from 'redux-saga/effects';
-import { registerSaga, loginSaga, getRolesSaga } from './AuthenticationSaga';
+import { registerSaga, loginSaga, getRolesSaga, logOutSaga } from './AuthenticationSaga';
 import { getEmployeesSaga, createEmployeesSaga } from './EmployeeSaga'
 import { getAllMenuItemsSaga, getItemDetailsSaga, createMenuItems } from './MenuSaga'
 import { Types } from '../redux/Types/UserAuthTypes';
@@ -15,7 +15,7 @@ export default function* watchUserAuthentication() {
   takeLatest(MENU_Types.GET_MENU_ITEMS, getAllMenuItemsSaga),
   takeLatest(MENU_Types.GET_ITEM_DETAILS, getItemDetailsSaga),
   takeLatest(MENU_Types.CREATE_MENU, createMenuItems),
-
+  takeLatest(Types.LOG_OUT, logOutSaga),
 
   ])
 }

@@ -10,8 +10,8 @@ import { MenuBar } from '../MenuBar'
 import { Button } from './styles'
 import { useDispatch, useSelector } from 'react-redux';
 import { getMenuItems } from '../../redux'
-
-// import tileData from './tileData';
+import { URLS } from '../../urls'
+import { updateLocation } from '../../utils/common'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,11 +44,12 @@ export const Menu = () => {
   const tileData = state?.details[0]?.item
 
   const handleClick = () => {
-    console.log("Add menu")
+    updateLocation(URLS.ADD_MENU_ITEM)
   }
+
   return (
     <div>
-      <Button oclick={handleClick} >Add Item</Button>
+      <Button onClick={handleClick} >Add Item</Button>
       <Headers headerItems={headerItems} />
       <MenuBar />
       <div className={classes.root}>

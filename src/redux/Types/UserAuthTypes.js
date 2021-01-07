@@ -7,4 +7,5 @@ export const Types = {
   SIGNUP_ERROR: 'SIGNUP_ERROR',
   GET_ROLES: 'ROLES',
   GET_ROLES_SUCCESS: 'ROLES_SUCCESS',
+  LOG_OUT: 'LOG_OUT'
 }

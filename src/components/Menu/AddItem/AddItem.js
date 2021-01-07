@@ -8,7 +8,7 @@ import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUIValues, createMenu } from '../../../redux'
 import { FormGroup, Button } from './style'
-import { array } from 'yup/lib/locale';
+import { MenuBar } from '../../MenuBar'
 
 export const AddMenuItem = () => {
 
@@ -65,7 +65,9 @@ export const AddMenuItem = () => {
 
 
   return (
+
     <Wrapper>
+      <MenuBar />
       <h1>Add New Menu Item</h1>
       <Formik
         initialValues={initialValues}

@@ -20,6 +20,18 @@ export const registerUserService = async (data) => {
   }
 }
 
+export const logOutUserService = async () => {
+  try {
+    const response = await API(API_END_POINTS.LOG_OUT, "post", {})
+    localStorage.clear();
+    return response.data
+
+  }
+  catch (err) {
+    return { 'error': err };
+  }
+}
+
 export const loginUserService = async (data) => {
   let response = undefined
   try {

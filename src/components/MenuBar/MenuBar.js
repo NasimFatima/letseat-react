@@ -1,12 +1,18 @@
 /*eslint-disable*/
 import React from "react"
-import { DrawerPaper, Logo, Image, SideBarWrapper, ListStyle, Item, ItemIcon, ItemText, NavLinkBar } from './styles'
+import { DrawerPaper, Logo, Image, SideBarWrapper, ListStyle, Item, ItemIcon, ItemText, NavLinkBar, Button } from './styles'
 import logo from '../../assets/images/logo.png'
 import { menuBarRoutes } from '../../sideBarItems'
 import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { logOut } from '../../redux'
 
 export const MenuBar = () => {
   const history = useHistory()
+  const dispatch = useDispatch()
+  const logout = () => {
+    dispatch(logOut())
+  }
   const handleClick = (path) => {
     history.push(path)
   }
@@ -32,7 +38,7 @@ export const MenuBar = () => {
 
   return (
     <div>
-
+      <Button onClick={logout}>Logout</Button>
       <DrawerPaper variant="persistent" anchor="left" open={true}>
         <Logo>
           <Image src={logo} alt="logo" />

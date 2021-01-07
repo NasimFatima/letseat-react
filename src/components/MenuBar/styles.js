@@ -87,3 +87,14 @@ export const NavLinkBar = styled(NavLink)`
   height: 50px;
   text-decoration: none;
 `
+export const Button = styled.button`
+  padding: 5px 12px;
+  font-size: 20px;
+  font-weight: 700;
+  appearance: none;
+  cursor: pointer;
+  float: right;
+  margin-top: 20px;
+  margin-right: 15px;
+  margin-bottom: 5px
+`;

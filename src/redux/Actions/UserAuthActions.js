@@ -54,3 +54,8 @@ export const getRolesSuccess = data => {
   };
 }
 
+export const logOut = () => {
+  return {
+    type: Types.LOG_OUT
+  };
+}

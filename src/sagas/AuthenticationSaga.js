@@ -1,6 +1,6 @@
 /* eslint-disable no-debugger */
 import { put, call } from 'redux-saga/effects';
-import { registerUserService, loginUserService } from '../Services/AuthenticationService'
+import { registerUserService, loginUserService, logOutUserService } from '../Services/AuthenticationService'
 import { loginSuccess, loginError, signupError, signupSuccess, getRolesSuccess } from '../redux'
 import { updateLocation } from '../utils/common'
 import { getAllRoles } from '../Services/UserService'
@@ -28,10 +28,22 @@ export function* loginSaga(payload) {
       yield call(updateLocation, URLS.HOME);
 
     }
+  } catch (error) {
+    toast.error(String(error))
+  }
+}
 
+
+export function* logOutSaga() {
+  try {
+    const response = yield call(logOutUserService);
+    if (response.detail === 'Successfully logged out.') {
+      yield call(updateLocation, URLS.LOGIN)
+    } else {
+      toast.error(String(response.error))
+    }
 
   } catch (error) {
-    yield put(loginError({ error: error }))
     toast.error(String(error))
   }
 }
