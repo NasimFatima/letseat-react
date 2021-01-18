@@ -6,6 +6,7 @@ export const API_END_POINTS = {
   'GETROLES': `users/group/`,
   'ITEMS': `menu/Items/`,
   'ITEMS_CATEGORY': `menu/menuItems/`,
-  'LOG_OUT': `users/logout/`
+  'LOG_OUT': `users/logout/`,
+  'ORDERS': 'order/orders/'
 
 }

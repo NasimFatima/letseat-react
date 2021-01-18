@@ -5,7 +5,7 @@ import API from '../Services/axios'
 export const getAllMenuItems = async () => {
   try {
     let response = await API(
-      API_END_POINTS.ITEMS);
+      API_END_POINTS.ITEMS_CATEGORY);
     return response.data
   }
   catch (err) {
@@ -36,3 +36,5 @@ export const createMenuItem = async (data) => {
     return { 'error': err };
   }
 }
+
+

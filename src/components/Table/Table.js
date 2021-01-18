@@ -20,9 +20,9 @@ export const CustomTable = (props) => {
                 </TableHeadCell>
               );
             })}
-            <TableHeadCell>
+            {/* <TableHeadCell>
               Actions
-                </TableHeadCell>
+                </TableHeadCell> */}
           </TablesRow>
         </TableHeader>
         <TableBody>
@@ -37,10 +37,10 @@ export const CustomTable = (props) => {
 
                   );
                 })}
-                <TableBodyCell>
+                {/* <TableBodyCell>
                   <Edit color="primary"></Edit>
                   <Delete color="primary"></Delete>
-                </TableBodyCell>
+                </TableBodyCell> */}
               </TablesRow>
             );
           })}

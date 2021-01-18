@@ -5,6 +5,8 @@ import { getAllMenuItemsSaga, getItemDetailsSaga, createMenuItems } from './Menu
 import { Types } from '../redux/Types/UserAuthTypes';
 import { EMPLOYEE_Types } from '../redux/Types/EmployeeTypes'
 import { MENU_Types } from '../redux/Types/MenuTypes'
+import { ORDERS_Types } from '../redux/Types/OrdersTypes'
+import { placeOrderSaga, getOrdersSaga } from './OrdersSaga'
 
 export default function* watchUserAuthentication() {
   yield all([takeLatest(Types.SIGNUP, registerSaga),
@@ -16,6 +18,8 @@ export default function* watchUserAuthentication() {
   takeLatest(MENU_Types.GET_ITEM_DETAILS, getItemDetailsSaga),
   takeLatest(MENU_Types.CREATE_MENU, createMenuItems),
   takeLatest(Types.LOG_OUT, logOutSaga),
+  takeLatest(ORDERS_Types.PLACE_ORDER, placeOrderSaga),
+  takeLatest(ORDERS_Types.VIEW_ORDER, getOrdersSaga),
 
   ])
 }

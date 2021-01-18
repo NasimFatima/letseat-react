@@ -6,17 +6,20 @@ import TableCell from "@material-ui/core/TableCell";
 
 
 export const TableResponsive = styled.div`
-  width: 100%;
-  margin-left: 300px;
-  overflowX: auto
+  width: 90%;
+  overflowX: auto,
+  margin: auto;
+  margin-left: 100px;
 `;
 
 export const TableStyle = styled(Table)`
   marginBottom: 0;
-  width: 100%;
+  width: 90%;
   maxWidth: 100%;
   backgroundColor: transparent;
   borderSpacing: 0;
+  border: 2px;
+  border-radius: 3px;
   borderCollapse: collapse
 `;
 

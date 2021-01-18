@@ -5,14 +5,18 @@ import { CreateEmployee } from './CreateEmployee'
 import { MenuBar } from '../MenuBar'
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllEmployees, showCreateEmployeeForm } from '../../redux'
+import { getRole } from '../../utils/common'
 
 export const Employee = () => {
   const dispatch = useDispatch();
+  const user = useSelector(state => state.auth.user);
+  const role = getRole(user)
+
   const data = useSelector(state => state.employee);
   const employee_data = data.employees
   const showForm = data.uI.showForm
   useEffect(() => {
-    dispatch(getAllEmployees());
+    dispatch(getAllEmployees(`?groups=Employee`));
   }, []);
 
   const handleClick = () => {
@@ -24,9 +28,9 @@ export const Employee = () => {
   return (
     <div>
       <MenuBar />
-      <h1>Employee</h1>
       <GridContainer>
-        <Button onClick={handleClick}>Add Employee</Button>
+        <h1>Employee</h1>
+        {(role === 'Admin' || user.isSuperuser === 'true') && <Button onClick={handleClick}>Add Employee</Button>}
         {showForm && <CreateEmployee status={showForm} />}
       </GridContainer>
       <CustomTable tableHeaderColor="primary" tableHead={headers} tableData={employee_data} />

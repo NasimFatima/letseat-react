@@ -35,12 +35,7 @@ export const logOutUserService = async () => {
 export const loginUserService = async (data) => {
   let response = undefined
   try {
-    if (data.payload.hasOwnProperty('type') && data.payload.type === 'googleLogin') {
-      response = await API(API_END_POINTS.GOOGLE_LOGIN, "post", data.payload);
-    }
-    else {
-      response = await API(API_END_POINTS.LOGIN, "post", data.payload);
-    }
+    response = await API(API_END_POINTS.LOGIN, "post", data.payload);
     if (response.data.success) {
       localStorage.token = response.data.token;
       return response.data.user;

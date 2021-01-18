@@ -3,7 +3,8 @@ import { MENU_Types } from '../Types/MenuTypes'
 const initial_state = {
   items: [],
   details: [],
-  uI: {}
+  uI: {},
+  cart: []
 }
 
 
@@ -18,6 +19,10 @@ export const menuReducer = (state = initial_state, action) => {
       return { ...state, details: payload };
     case MENU_Types.SET_UI_VALUES:
       return { ...state, uI: { ...state.uI, ...payload } };
+    case MENU_Types.ADD_TO_CART:
+      return { ...state, cart: [...state.cart, payload] };
+    case MENU_Types.UPDATE_CART:
+      return { ...state, cart: payload };
     default:
       return state;
   }

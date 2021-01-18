@@ -12,10 +12,11 @@ export const Button = styled.button`
   appearance: none;
   cursor: pointer;
   float: right;
-  margin-right: 15px;
+  margin-right: 175px;
   margin-bottom: 5px
 `;
 
 export const GridContainer = styled(Grid)`
-
+  width: 90%;
+  margin-left: 100px;
 `;

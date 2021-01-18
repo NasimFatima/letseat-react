@@ -29,3 +29,16 @@ export const Button = styled.button`
   text-transform: capitalize;
   grid-column: 1/-1;
 `
+
+export const Wrapper = styled.div`
+background-color: white;
+box-shadow: 0 0 1.5rem rgba(105, 105, 105, 0.5);
+border-radius: 4px;
+width: 100%;
+`
+
+export const FormStyle = styled.div`
+  margin: auto;
+  width: 50vw;
+  height: 100%;
+`

@@ -11,7 +11,7 @@ export const PrivateRoute = (route) => {
     history.push(URLS.LOGIN)
   }
   if (!route.needsAuth && isAuthenticated() && (location.pathname.match('/auth/login') || location.pathname.match('/auth/register'))) {
-    history.push(URLS.HOME)
+    history.push(URLS.DASHBOARD)
   }
   return <Route exact render={(props) => <route.component {...props} />}></Route>
 

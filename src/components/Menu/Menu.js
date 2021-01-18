@@ -1,17 +1,16 @@
 import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
-import GridListTileBar from '@material-ui/core/GridListTileBar';
-import IconButton from '@material-ui/core/IconButton';
-import InfoIcon from '@material-ui/icons/Info';
 import { Headers } from '../Header'
 import { MenuBar } from '../MenuBar'
-import { Button } from './styles'
+import { Button, Container, Gridlist, Tiles, PriceBox, ShoppingIcon } from './styles'
 import { useDispatch, useSelector } from 'react-redux';
 import { getMenuItems } from '../../redux'
 import { URLS } from '../../urls'
 import { updateLocation } from '../../utils/common'
+import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
+import { setUIValues, addToCart } from '../../redux'
+import { toast } from "react-toastify";
+import { getRole } from '../../utils/common'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,10 +21,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '70px',
     backgroundColor: theme.palette.background.paper,
   },
-  gridList: {
-    width: '700px',
-    height: '100%',
-  },
+
   icon: {
     color: 'rgba(255, 255, 255, 0.54)',
   },
@@ -35,44 +31,63 @@ export const Menu = () => {
 
   const classes = useStyles();
   const dispatch = useDispatch();
+  const user = useSelector(state => state.auth.user);
+  const role = getRole(user)
   useEffect(() => {
     dispatch(getMenuItems());
+    dispatch(setUIValues({ showAddToCart: false }))
+
   }, []);
 
   const state = useSelector(state => state.menu);
-  const headerItems = state.items
+  let headerItems = []
+  if (state.items.length) headerItems = state.items
   const tileData = state?.details[0]?.item
 
   const handleClick = () => {
     updateLocation(URLS.ADD_MENU_ITEM)
   }
+  const showModal = (categoryName, categoryId, item) => {
+    item['categoryName'] = categoryName
+    item['categoryId'] = categoryId
+    item['quantity'] = 1
+    item['status'] = 'Pending'
+    item['ItemCategory'] = item['id']
+    delete item['id']
+    dispatch(addToCart(item))
+    toast.success("Item Added in Cart")
+  }
 
   return (
     <div>
-      <Button onClick={handleClick} >Add Item</Button>
-      <Headers headerItems={headerItems} />
       <MenuBar />
-      <div className={classes.root}>
-        <GridList cellHeight={180} className={classes.gridList}>
-          <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }}>
-          </GridListTile>
-          {tileData && tileData.map((tile, key) => (
-            <GridListTile key={tile.img}>
-              {/* <img src={tikka} alt={tile.name} /> */}
-              <GridListTileBar
-                title={tile.name}
-                subtitle={<span>by: {tile.author}</span>}
-                actionIcon={
-                  <IconButton aria-label={`info about ${tile.title}`} className={classes.icon}>
-                    <InfoIcon />
-                  </IconButton>
-                }
-              />
-            </GridListTile>
-          ))}
-        </GridList>
-      </div>
-    </div>
+      { role !== 'Customer' &&
+        <div>
+          <Button onClick={handleClick} >Add Item</Button>
+        </div>}
+      <Container>
+        <Headers headerItems={headerItems} />
+        <div className={classes.root}>
+          <Gridlist cellHeight={'100%'}>
+            {tileData && tileData.map((tile, key) => (
+              <Tiles key={key}>
+                <h2 >{tile.name}</h2>
+                <p>Description: {tile.description}</p>
+                <h3>Size</h3>
+                {tile.itemCategory && tile.itemCategory.map((item, key) => (
+                  <PriceBox key={key}>
+                    <h4>{item.size}   Price: {item.price}</h4>
+                    <ShoppingIcon>Add To Cart <AddShoppingCartIcon onClick={() => showModal(tile.name, tile.id, item)} ></AddShoppingCartIcon></ShoppingIcon>
+
+                  </PriceBox>
+                ))}
+              </Tiles>
+            ))}
+          </Gridlist>
+        </div>
+      </Container>
+
+    </div >
 
   )
 }

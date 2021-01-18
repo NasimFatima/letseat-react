@@ -2,9 +2,9 @@
 import { API_END_POINTS } from '../apiEndPoints'
 import API from '../Services/axios'
 
-export const getAllUserService = async () => {
+export const getAllUserService = async (searchParams) => {
   try {
-    const response = await API(API_END_POINTS.USERS)
+    const response = await API(API_END_POINTS.USERS + searchParams)
     if (response.data) {
       return response.data
     } else {

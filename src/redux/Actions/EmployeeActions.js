@@ -1,9 +1,10 @@
 
 import { EMPLOYEE_Types } from '../Types/EmployeeTypes'
 
-export const getAllEmployees = () => {
+export const getAllEmployees = (searchParams) => {
   return {
     type: EMPLOYEE_Types.GET_EMPLOYEES,
+    payload: searchParams
   };
 }
 

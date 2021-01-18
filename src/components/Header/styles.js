@@ -4,9 +4,7 @@ import Typography from '@material-ui/core/Typography';
 
 export const Bar = styled(AppBar)`
   position: static;
-  margin-left: 260px;
-  background-color: LightGrey;
-  margin-top: 70px;
+  background-color: #000080;
   max-width: 100%
 `;
 
@@ -22,6 +20,6 @@ export const Typograph = styled(Typography)`
 export const Button = styled.button`
   all: unset;
   cursor: pointer;
-  color: DarkGoldenRod;
+  color: white;
   text-transform: capitalize
 `;
