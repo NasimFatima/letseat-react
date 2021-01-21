@@ -4,6 +4,14 @@ import { updateCart } from '../../redux';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import { CustomTable, CustomRow, CustomTableCell } from './styles'
+
 
 export const CartItems = () => {
   const dispatch = useDispatch();
@@ -19,7 +27,6 @@ export const CartItems = () => {
     }))
   }
   const increaseQuantity = (item) => {
-
     dispatch(updateCart({
       totalBill: item.itemCategory.price, orderItems: {
         price: item.itemCategory.price,
@@ -28,49 +35,61 @@ export const CartItems = () => {
       }
     }))
   }
-
+  function ccyFormat(num) {
+    return `${num.toFixed(2)}`;
+  }
+  function subtotal(items) {
+    return items.map(({ price }) => price).reduce((sum, i) => sum + i, 0);
+  }
+  const invoiceSubtotal = subtotal(productsInCart);
+  const invoiceTotal = invoiceSubtotal;
   return (
-    <div>
-      {productsInCart.map((product, key) => {
-        return (
-          <div key={key} style={{ textTransform: 'capitalize', padding: '20px' }}>
-            <div style={{ display: 'flex' }}>
-              <div>
-                {product.itemCategory.itemCategory.menuItem.name}
-              </div>
-            </div>
-            <div style={{ display: 'flex' }}>
-              <div>
-                {product.itemCategory.itemCategory.name}
-              </div>
-              <div style={{ marginLeft: '150px' }}>{product.itemCategory.price}</div>
-            </div>
-            <div style={{ display: 'flex' }}>
-              <div>
-                {product.itemCategory.size}
-              </div>
-              <div style={{ marginLeft: '150px' }}>
-                {product.quantity === 1 ? (
+    <TableContainer component={Paper}>
+      <CustomTable>
+        <TableHead>
+          <CustomRow>
+            <CustomTableCell>Item</CustomTableCell>
+            <CustomTableCell>Type</CustomTableCell>
+            <CustomTableCell>Size</CustomTableCell>
+            <CustomTableCell >Qty.</CustomTableCell>
+            <CustomTableCell >Price</CustomTableCell>
+            <CustomTableCell >Action</CustomTableCell>
+          </CustomRow>
+        </TableHead>
+        <TableBody>
+          {productsInCart.map((row) => (
+            <TableRow key={row.id}>
+              <TableCell>{row.itemCategory.itemCategory.menuItem.name}</TableCell>
+              <TableCell>{row.itemCategory.itemCategory.name}</TableCell>
+              <TableCell>{row.itemCategory.size}</TableCell>
+              <TableCell>{row.quantity}</TableCell>
+              <TableCell >{row.itemCategory.price}</TableCell>
+              <TableCell >
+                {row.quantity === 1 ? (
                   <DeleteIcon
-                    onClick={() => decreaseQuantity(product)}
+                    onClick={() => decreaseQuantity(row)}
                     style={{ cursor: 'pointer' }}
                   />
                 ) : (
-                    <RemoveIcon onClick={() => decreaseQuantity(product)}
+                    <RemoveIcon onClick={() => decreaseQuantity(row)}
                       style={{ cursor: 'pointer' }} />
-                  )}
-                {product.quantity} <AddIcon onClick={() => increaseQuantity(product)}
-                  style={{ cursor: 'pointer' }} />
-              </div>
-            </div>
-          </div>
+                  )} <AddIcon onClick={() => increaseQuantity(row)}
+                    style={{ cursor: 'pointer' }} /></TableCell>
+            </TableRow>
+          ))}
 
-        );
-      })}
-      <div style={{ display: 'flex', paddingLeft: '20px' }}>
-        <div>Total: </div><div style={{ marginLeft: '150px' }}>{productsInCart.reduce((n, { price, quantity }) => n + (price * quantity), 0)}</div>
-      </div>
-    </div >
+          <TableRow>
+            <TableCell rowSpan={3} />
+            <TableCell colSpan={2}>Subtotal</TableCell>
+            <TableCell align="right">{ccyFormat(invoiceSubtotal)}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell colSpan={2}>Total</TableCell>
+            <TableCell align="right">{ccyFormat(invoiceTotal)}</TableCell>
+          </TableRow>
+        </TableBody>
+      </CustomTable>
+    </TableContainer>
   )
 }
 

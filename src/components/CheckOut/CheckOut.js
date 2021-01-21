@@ -7,6 +7,7 @@ import { Formik, Field, Form } from 'formik';
 import { useDispatch } from 'react-redux';
 import { placeOrder } from '../../redux';
 import { MenuBar } from '../MenuBar';
+import Button from '@material-ui/core/Button';
 
 export const CheckOut = () => {
   const dispatch = useDispatch();
@@ -48,7 +49,7 @@ export const CheckOut = () => {
             </label>
               </div>
               <FormInput>
-                <button type='submit'>Order Now</button>
+                <Button variant="contained" color="secondary" type='submit'>Order Now</Button>
               </FormInput>
             </FormControl>
 

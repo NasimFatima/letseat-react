@@ -1,6 +1,15 @@
 import styled from 'styled-components';
 import GridList from '@material-ui/core/GridList';
 
+export const Wrapper = styled.div`
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  overflow: hidden;
+  margin-top: 70px;
+
+`
 export const Button = styled.button`
 padding: 5px 12px;
 color: white;

@@ -29,13 +29,19 @@ export const Signup = (props) => {
     password2: '',
     phone: '',
     address: '',
-    role: roles[0].id,
+    role: 0
   };
+
   if (type === 'Create_Employee') {
     roles = roles.filter(item => item.name === 'Employee')
+  } else {
+    roles = roles.filter(item => item.name === 'Customer')
+  }
+  if (roles.length > 0) {
     initialValues['role'] = roles[0].id
   }
   useEffect(() => {
+    dispatch(getRoles())
     dispatch(signupError({ error: '' }))
   }, []);
 
