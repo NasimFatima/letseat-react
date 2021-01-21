@@ -19,3 +19,10 @@ export const viewOrderSuccess = data => {
     payload: data
   };
 }
+
+export const updateOrder = data => {
+  return {
+    type: ORDERS_Types.UPDATE_ORDER,
+    payload: data
+  };
+}

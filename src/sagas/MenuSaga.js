@@ -1,16 +1,20 @@
 import { put, call } from 'redux-saga/effects';
 import { getAllMenuItems, getItemsCategories, createMenuItem } from '../Services/Menuservice'
-import { getMenuItemsSuccess, getItemDetailsSuccess } from '../redux'
+import { getMenuItemsSuccess, getItemDetailsSuccess, addToCart } from '../redux'
 import { updateLocation } from '../utils/common'
 import { URLS } from '../urls'
 import { toast } from "react-toastify";
+import { placeOrder, getOrders } from '../Services/OrderService'
+import { API_END_POINTS } from '../apiEndPoints'
 
 export function* getAllMenuItemsSaga() {
   try {
     const items = yield call(getAllMenuItems);
-    yield put(getMenuItemsSuccess(items))
-    const details = yield call(getItemsCategories, `?id=${items[0].id}`)
-    yield put(getItemDetailsSuccess(details))
+    if (items.length) {
+      yield put(getMenuItemsSuccess(items))
+      const details = yield call(getItemsCategories, `?id=${items[0].id}`)
+      yield put(getItemDetailsSuccess(details))
+    }
   } catch (error) {
     toast.error(String(error))
   }
@@ -34,5 +38,31 @@ export function* createMenuItems(data) {
     }
   } catch (error) {
     toast.error(String(error))
+  }
+}
+
+export function* updateCartSaga(data) {
+  try {
+    const response = yield call(placeOrder, data);
+    if (response.data) {
+      toast.success("Cart is Updated")
+      yield call(updateLocation, URLS.MENU);
+      data = response.data
+      yield put(addToCart(data.order))
+    }
+  } catch (error) {
+    toast.error(String(error))
+  }
+}
+
+
+export function* getCartItemsSaga() {
+  try {
+    const response = yield call(getOrders, API_END_POINTS.ORDERS + '?type=Cart');
+    const data = response['data']
+    yield put(addToCart(data[0].order))
+
+  } catch (error) {
+    console.error(error)
   }
 }

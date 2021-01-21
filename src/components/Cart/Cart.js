@@ -4,7 +4,7 @@ import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux';
-import { setUIValues } from '../../redux';
+import { setUIValues, getCartItems } from '../../redux';
 import Link from '@material-ui/core/Link';
 import { URLS } from '../../urls'
 import { CartItems } from '../CartItems'
@@ -28,6 +28,8 @@ export const Cart = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(setUIValues({ showCartModalOpen: true }));
+    dispatch(getCartItems())
+
   }, []);
 
   const state = useSelector(state => state.menu);

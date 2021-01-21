@@ -75,9 +75,9 @@ export const AddMenuItem = () => {
           validationSchema={validationSchemaMenuItem}
           render={({ values }) => (
             <Form>
+              <label htmlFor="name">Item Name</label>
               <FormGroup
                 name="name"
-                label="Name of Item"
               ></FormGroup>
               {values.name.length > 0 ? (
                 <FieldArray
@@ -93,10 +93,12 @@ export const AddMenuItem = () => {
                           <h3>Add Category</h3>
                           <Grid container direction="row" alignItems="center">
                             <Grid item sm={4}>
-                              <FormGroup name={`itemCategories.${index}.name`} label="Name" />
+                              <label htmlFor={`itemCategories.${index}.name`}>Category Name</label>
+                              <FormGroup name={`itemCategories.${index}.name`} />
                             </Grid>
                             <Grid item sm={4}>
-                              <FormGroup name={`itemCategories.${index}.description`} label="description" />
+                              <label htmlFor={`itemCategories.${index}.description`}>Category Description</label>
+                              <FormGroup name={`itemCategories.${index}.description`} />
                             </Grid>
                             <Grid item sm={4}>
                               <Button type="button" onClick={() => categoryHelpers.remove(index)}>-</Button>
@@ -117,10 +119,12 @@ export const AddMenuItem = () => {
                                       <h3>Add Size</h3>
                                       <Grid container spacing={3} component={Card}>
                                         <Grid item sm={4}>
-                                          <FormGroup name={`itemCategories.${index}.itemSizes.${i}.price`} label="Price" />
+                                          <label htmlFor={`itemCategories.${index}.itemSizes.${i}.price`} >Price</label>
+                                          <FormGroup name={`itemCategories.${index}.itemSizes.${i}.price`} />
                                         </Grid>
                                         <Grid item sm={4}>
-                                          <FormGroup name={`itemCategories.${index}.itemSizes.${i}.size`} label="size" />
+                                          <label htmlFor={`itemCategories.${index}.itemSizes.${i}.size`} >Size</label>
+                                          <FormGroup name={`itemCategories.${index}.itemSizes.${i}.size`} />
                                         </Grid>
                                         <Grid item sm={4}>
                                           <Button type="button" onClick={() => sizesHelpers.remove(i)}>-</Button>

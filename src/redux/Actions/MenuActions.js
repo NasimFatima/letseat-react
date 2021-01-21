@@ -43,7 +43,6 @@ export const createMenu = data => {
 }
 
 export const addToCart = data => {
-  console.log("function called")
   return {
     type: MENU_Types.ADD_TO_CART,
     payload: data
@@ -54,5 +53,13 @@ export const updateCart = data => {
   return {
     type: MENU_Types.UPDATE_CART,
     payload: data
+  };
+}
+
+
+
+export const getCartItems = () => {
+  return {
+    type: MENU_Types.GET_CART_ITEMS,
   };
 }

@@ -1,17 +1,18 @@
 import { put, call } from 'redux-saga/effects';
-import { placeOrder, getOrders } from '../Services/OrderService'
-import { viewOrderSuccess } from '../redux'
+import { placeOrder, getOrders, updateOrder } from '../Services/OrderService'
+import { viewOrderSuccess, addToCart } from '../redux'
 import { updateLocation } from '../utils/common'
 import { URLS } from '../urls'
 import { toast } from "react-toastify";
-
+import { API_END_POINTS } from '../apiEndPoints'
 
 export function* placeOrderSaga(data) {
   try {
     const response = yield call(placeOrder, data);
     if (response.data) {
       toast.success("Order has been placed Successfully")
-      yield call(updateLocation, URLS.MENU);
+      yield put(addToCart([]))
+      yield call(updateLocation, URLS.ORDER);
     }
   } catch (error) {
     toast.error(String(error))
@@ -20,19 +21,24 @@ export function* placeOrderSaga(data) {
 
 export function* getOrdersSaga() {
   try {
-    console.log("in saGA")
-    const response = yield call(getOrders);
-    const data = response['data']
-    data.map(order => {
-      order.order.map(item => {
-        item['size'] = item?.itemCategory?.size
-        item['category'] = item?.itemCategory?.itemCategory.name
-        item['item'] = item?.itemCategory?.itemCategory.menuItem.name
-      })
-    })
-    yield put(viewOrderSuccess(data))
+    const response = yield call(getOrders, API_END_POINTS.ORDERS);
+    yield put(viewOrderSuccess(response))
 
   } catch (error) {
     console.error(error)
+  }
+}
+
+export function* updateOrderSaga(data) {
+  try {
+    const response = yield call(updateOrder, data);
+    if (response) {
+      yield call(updateLocation, URLS.ORDER)
+      const response = yield call(getOrders, API_END_POINTS.ORDERS);
+      yield put(viewOrderSuccess(response))
+      toast.success("Order has been Updated Successfully")
+    }
+  } catch (error) {
+    toast.error(String(error))
   }
 }

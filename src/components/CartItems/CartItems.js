@@ -9,28 +9,24 @@ export const CartItems = () => {
   const dispatch = useDispatch();
   const state = useSelector(state => state.menu);
   const productsInCart = state?.cart;
-  const deleteItemFromCart = (item) => {
-    let index = productsInCart.map((product) => product.item_category).indexOf(item['item_category']);
-    if (index > -1) {
-
-      productsInCart.splice(index, 1);
-      console.log("Result", productsInCart);
-      dispatch(updateCart(productsInCart))
-    }
-  }
   const decreaseQuantity = (item) => {
-    let index = productsInCart.map((product) => product.item_category).indexOf(item['item_category']);
-    if (index > -1) {
-      productsInCart[index]['quantity'] = item.quantity - 1
-      dispatch(updateCart(productsInCart))
-    }
+    dispatch(updateCart({
+      totalBill: item.itemCategory.price, orderItems: {
+        price: item.itemCategory.price,
+        quantity: item.quantity - 1,
+        item_category: item.itemCategory.itemCategory.id
+      }
+    }))
   }
   const increaseQuantity = (item) => {
-    let index = productsInCart.map((product) => product.item_category).indexOf(item['item_category']);
-    if (index > -1) {
-      productsInCart[index]['quantity'] = item.quantity + 1
-      dispatch(updateCart(productsInCart))
-    }
+
+    dispatch(updateCart({
+      totalBill: item.itemCategory.price, orderItems: {
+        price: item.itemCategory.price,
+        quantity: item.quantity + 1,
+        item_category: item.itemCategory.id
+      }
+    }))
   }
 
   return (
@@ -40,18 +36,23 @@ export const CartItems = () => {
           <div key={key} style={{ textTransform: 'capitalize', padding: '20px' }}>
             <div style={{ display: 'flex' }}>
               <div>
-                {product.categoryName}
+                {product.itemCategory.itemCategory.menuItem.name}
               </div>
-              <div style={{ marginLeft: '150px' }}>{product.price}</div>
             </div>
             <div style={{ display: 'flex' }}>
               <div>
-                {product.size}
+                {product.itemCategory.itemCategory.name}
+              </div>
+              <div style={{ marginLeft: '150px' }}>{product.itemCategory.price}</div>
+            </div>
+            <div style={{ display: 'flex' }}>
+              <div>
+                {product.itemCategory.size}
               </div>
               <div style={{ marginLeft: '150px' }}>
                 {product.quantity === 1 ? (
                   <DeleteIcon
-                    onClick={() => deleteItemFromCart(product)}
+                    onClick={() => decreaseQuantity(product)}
                     style={{ cursor: 'pointer' }}
                   />
                 ) : (

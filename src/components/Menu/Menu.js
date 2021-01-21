@@ -8,8 +8,7 @@ import { getMenuItems } from '../../redux'
 import { URLS } from '../../urls'
 import { updateLocation } from '../../utils/common'
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
-import { setUIValues, addToCart } from '../../redux'
-import { toast } from "react-toastify";
+import { setUIValues, updateCart } from '../../redux'
 import { getRole } from '../../utils/common'
 
 const useStyles = makeStyles((theme) => ({
@@ -40,6 +39,7 @@ export const Menu = () => {
   }, []);
 
   const state = useSelector(state => state.menu);
+  const productsInCart = state?.cart;
   let headerItems = []
   if (state.items.length) headerItems = state.items
   const tileData = state?.details[0]?.item
@@ -47,15 +47,26 @@ export const Menu = () => {
   const handleClick = () => {
     updateLocation(URLS.ADD_MENU_ITEM)
   }
-  const showModal = (categoryName, categoryId, item) => {
-    item['categoryName'] = categoryName
-    item['categoryId'] = categoryId
-    item['quantity'] = 1
-    item['status'] = 'Pending'
-    item['ItemCategory'] = item['id']
-    delete item['id']
-    dispatch(addToCart(item))
-    toast.success("Item Added in Cart")
+  const addItems = (categoryName, categoryId, item) => {
+    const alreadyInCart = productsInCart.filter((product) => product.itemCategory.id === item.id);
+    if (alreadyInCart.length > 0) {
+      dispatch(updateCart({
+        totalBill: item.price, orderItems: {
+          price: alreadyInCart[0].itemCategory.price,
+          quantity: alreadyInCart[0].quantity + 1,
+          itemCategory: alreadyInCart[0].itemCategory.id
+        }
+      }))
+    }
+    else {
+      item['categoryName'] = categoryName
+      item['categoryId'] = categoryId
+      item['quantity'] = 1
+      item['status'] = 'Pending'
+      item['ItemCategory'] = item['id']
+      delete item['id']
+      dispatch(updateCart({ 'totalBill': item.price, 'orderItems': item }))
+    }
   }
 
   return (
@@ -66,7 +77,9 @@ export const Menu = () => {
           <Button onClick={handleClick} >Add Item</Button>
         </div>}
       <Container>
-        <Headers headerItems={headerItems} />
+        {
+          headerItems.length > 0 && <Headers headerItems={headerItems} />
+        }
         <div className={classes.root}>
           <Gridlist cellHeight={'100%'}>
             {tileData && tileData.map((tile, key) => (
@@ -77,7 +90,7 @@ export const Menu = () => {
                 {tile.itemCategory && tile.itemCategory.map((item, key) => (
                   <PriceBox key={key}>
                     <h4>{item.size}   Price: {item.price}</h4>
-                    <ShoppingIcon>Add To Cart <AddShoppingCartIcon onClick={() => showModal(tile.name, tile.id, item)} ></AddShoppingCartIcon></ShoppingIcon>
+                    <ShoppingIcon>Add To Cart <AddShoppingCartIcon onClick={() => addItems(tile.name, tile.id, item)} ></AddShoppingCartIcon></ShoppingIcon>
 
                   </PriceBox>
                 ))}

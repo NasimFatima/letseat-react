@@ -14,12 +14,13 @@ import { getAllRoles } from '../../Services/UserService'
 import PropTypes from "prop-types";
 import Link from '@material-ui/core/Link';
 import { URLS } from '../../urls'
+import { toggleCreateEmployeeModal } from '../../redux'
 
 export const Signup = (props) => {
   const { type } = props
   const dispatch = useDispatch();
   const state = useSelector(state => state.auth);
-  const roles = state.roles
+  let roles = state.roles
   const initialValues = {
     firstName: '',
     lastName: '',
@@ -28,17 +29,14 @@ export const Signup = (props) => {
     password2: '',
     phone: '',
     address: '',
-    role: 0,
+    role: roles[0].id,
   };
+  if (type === 'Create_Employee') {
+    roles = roles.filter(item => item.name === 'Employee')
+    initialValues['role'] = roles[0].id
+  }
   useEffect(() => {
     dispatch(signupError({ error: '' }))
-    dispatch(getRoles())
-    getAllRoles().then(res => {
-      if (type === 'Create_Employee') {
-        res = res.filter(item => item.name === 'Employee')
-      }
-      // setRoles(res)
-    })
   }, []);
 
   const validationSchema = Yup.object({

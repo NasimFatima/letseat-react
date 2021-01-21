@@ -7,20 +7,21 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logOut } from '../../redux';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import { Cart } from '../Cart';
-import { setUIValues } from '../../redux';
+import { setUIValues, getCartItems } from '../../redux';
 import { getRole, getAllowedRoutes } from '../../utils/common';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import { Typograph } from '../Header/styles';
-import { LogoImage } from './styles';
 import Grid from '@material-ui/core/Grid';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import Badge from '@material-ui/core/Badge';
 
 export const MenuBar = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const user = useSelector(state => state.auth.user);
+  const cartItems = useSelector(state => state.menu.cart)
   const role = getRole(user);
   const allowedRoutes = getAllowedRoutes(menuBarRoutes, role);
 
@@ -32,6 +33,7 @@ export const MenuBar = () => {
   };
   useEffect(() => {
     dispatch(setUIValues({ showCart: false }));
+    dispatch(getCartItems())
   }, []);
   const state = useSelector(state => state.menu);
 
@@ -64,7 +66,9 @@ export const MenuBar = () => {
             <div>
               {state.uI.showCart && <Cart />}
               <IconButton onClick={() => showModal()} color="inherit">
-                <ShoppingCartIcon></ShoppingCartIcon>
+                <Badge badgeContent={cartItems.length} color="secondary">
+                  <ShoppingCartIcon></ShoppingCartIcon>
+                </Badge>
               </IconButton>
               <IconButton color="inherit" onClick={() => logout()}>
                 <ExitToAppIcon />

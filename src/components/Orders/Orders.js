@@ -1,8 +1,10 @@
+/* eslint-disable no-undef */
 import React, { useEffect } from 'react';
 import { CustomTable } from '../Table/Table'
 import { MenuBar } from '../MenuBar'
 import { useDispatch, useSelector } from 'react-redux';
-import { viewOrder } from '../../redux'
+import { viewOrder, updateOrder } from '../../redux'
+import moment from 'moment'
 
 export const Orders = () => {
   const dispatch = useDispatch();
@@ -17,6 +19,10 @@ export const Orders = () => {
   { title: 'Category', key: 'category' },
   { title: 'Size', key: 'size' }
   ]
+  const changeOrderStatus = (orderId) => {
+
+    dispatch(updateOrder({ status: 'Completed', id: orderId }))
+  }
   return (
     <div>
       <MenuBar />
@@ -25,8 +31,10 @@ export const Orders = () => {
 
           <div key={key}>
             <div style={{ marginLeft: '300px', paddingBottom: '20px' }}>
+
               <h1>Order</h1>
-              <p>Placed AT: {order.createdAt}</p>
+              {order.status === 'Pending' && <button style={{ float: 'right', marginRight: '360px', backgroundColor: 'blue', color: 'white', height: '30px' }} onClick={() => changeOrderStatus(order.id)}> Mark As Complete</button>}
+              <p>Placed AT: {moment(order.createdAt).format('MMMM Do YYYY, h:mm:ss a')}</p>
               <p>Payment Method: {order.paymentMethod}</p>
               <p>Total Bill: {order.totalBill}</p>
               <p>Status: {order.status}</p>

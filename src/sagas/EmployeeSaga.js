@@ -22,7 +22,7 @@ export function* getEmployeesSaga(data) {
 export function* createEmployeesSaga(data) {
   try {
     const response = yield call(createUser, data);
-    if (response.Success) {
+    if (response.success) {
       toast.success("Employee Created Successfully")
       yield put(toggleCreateEmployeeModal({ createModalOpen: false }))
 
