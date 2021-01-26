@@ -37,7 +37,7 @@ export const getOrders = async (url) => {
 
 export const updateOrder = async (data) => {
   try {
-    const response = await API(`${API_END_POINTS.ORDERS}${data.payload.id}/`, "patch", data.payload)
+    const response = await API(`${API_END_POINTS.ORDERS}${data.payload.id}/change_order_status/`, "post", data.payload)
     if (response.data) {
       return response.data
     } else {

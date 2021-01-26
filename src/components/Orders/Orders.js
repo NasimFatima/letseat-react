@@ -21,7 +21,7 @@ export const Orders = () => {
   ]
   const changeOrderStatus = (orderId) => {
 
-    dispatch(updateOrder({ status: 'Completed', id: orderId }))
+    dispatch(updateOrder({ status: 2, id: orderId }))
   }
   return (
     <div>
@@ -30,7 +30,7 @@ export const Orders = () => {
         return (
 
           <div key={key}>
-            <div style={{ marginLeft: '300px', paddingBottom: '20px' }}>
+            <div style={{ marginLeft: '300px', paddingBottom: '20px', textTransform: 'capitalize' }}>
 
               <h1>Order</h1>
               {order.status === 'Pending' && <button style={{ float: 'right', marginRight: '360px', backgroundColor: 'blue', color: 'white', height: '30px' }} onClick={() => changeOrderStatus(order.id)}> Mark As Complete</button>}
@@ -38,8 +38,8 @@ export const Orders = () => {
               <p>Payment Method: {order.paymentMethod}</p>
               <p>Total Bill: {order.totalBill}</p>
               <p>Status: {order.status}</p>
-              {order.orderBy &&
-                <p>Order By:  {`${order.orderBy.firstName}  ${order.orderBy.lastName}`}</p>
+              {order.customer &&
+                <p>Order By:  {`${order.customer.firstName}  ${order.customer.lastName}`}</p>
               }
             </div>
             {order.order.length > 0 &&

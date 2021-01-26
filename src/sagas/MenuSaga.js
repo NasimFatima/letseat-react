@@ -58,9 +58,8 @@ export function* updateCartSaga(data) {
 
 export function* getCartItemsSaga() {
   try {
-    const response = yield call(getOrders, API_END_POINTS.ORDERS + '?type=Cart');
-    const data = response['data']
-    yield put(addToCart(data[0].order))
+    const response = yield call(getOrders, API_END_POINTS.CART_ITEMS);
+    yield put(addToCart(response[0].order))
 
   } catch (error) {
     console.error(error)

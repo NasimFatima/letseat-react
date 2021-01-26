@@ -15,6 +15,7 @@ export const CheckOut = () => {
 
   const placeOrderHandler = (values) => {
     values['isCheckedout'] = true
+    values['paymentMethod'] = parseInt(values['paymentMethod'], 10)
     values['type'] = 'place_order'
     dispatch(placeOrder(values))
   }

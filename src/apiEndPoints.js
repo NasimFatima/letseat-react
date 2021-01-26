@@ -7,6 +7,7 @@ export const API_END_POINTS = {
   'ITEMS': `menu/Items/`,
   'ITEMS_CATEGORY': `menu/menuItems/`,
   'LOG_OUT': `users/logout/`,
-  'ORDERS': 'order/orders/'
+  'ORDERS': 'order/orders/',
+  'CART_ITEMS': 'order/orders/cart_items/',
 
 }
